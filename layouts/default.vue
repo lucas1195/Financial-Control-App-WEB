@@ -53,8 +53,13 @@
             ></v-text-field>
 
             <v-sheet
-              style="border-radius: 40px; flex-grow: 1"
-              class="pa-6 mr-6 mt-4"
+              style="
+                border-radius: 40px;
+                flex-grow: 1;
+                max-height: 100%;
+                overflow-y: auto;
+              "
+              class="pa-6 mt-4 align-center justify-center"
               elevation="4"
             >
               <slot name="left-sheet"></slot>
@@ -63,7 +68,12 @@
 
           <v-col cols="12" md="6" class="d-flex flex-column">
             <v-sheet
-              style="border-radius: 40px; flex-grow: 1"
+              style="
+                border-radius: 40px;
+                flex-grow: 1;
+                max-height: 100%;
+                overflow-y: auto;
+              "
               class="pa-6"
               elevation="4"
             >
@@ -79,13 +89,55 @@
 </template>
 
 <script setup lang="ts">
+//******IMPORTS*******"
+
+//******IMPORTS*******"
+
+//******COMPOSABLES*******"
+
+//******COMPOSABLES*******"
+
+//******PROPS*******"
+
+//******PROPS*******"
+
+//******EMITS*******"
+
+//******EMITS*******"
+
+//******VARIAVEIS*******"
 const drawer = ref(true);
 const menuItems = computed(() => {
   return [
-    { text: "DashBoard", icon: "mdi-folder", to: "/DashBoard" },
+    { text: "DashBoard", icon: "mdi-folder", to: "/" },
     { text: "Transactions", icon: "mdi-account-multiple", to: "/Transactions" },
   ];
 });
+//******VARIAVEIS*******"
+
+//******WATCHS*******"
+
+//******WATCHS*******"
+
+//******COMPUTEDS*******"
+
+//******COMPUTEDS*******"
+
+//******LIFECYCLE HOOKS*******"
+
+//******LIFECYCLE HOOKS*******"
+
+//******METHODS*******"
+
+//******METHODS*******"
+
+//******OUTROS*******"
+
+//******OUTROS*******"
+
+//******EXPOSE*******"
+
+//******EXPOSE*******"
 </script>
 
 <style scoped>

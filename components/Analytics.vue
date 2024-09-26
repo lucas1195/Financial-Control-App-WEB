@@ -1,7 +1,7 @@
 <template>
   <v-card flat d-flex class="flex-column align-center">
     <v-card-text class="text-h5"> Expenses Statistics </v-card-text>
-    <Bar :data="data" :options="options" />
+    <Bar :data="data" :options="options" ref="barChart" />
   </v-card>
   <v-divider class="ma-2" />
   <v-card
@@ -19,6 +19,7 @@
 
 <script setup lang="ts">
 //******IMPORTS*******"
+import axios from "axios";
 import {
   Chart as ChartJS,
   Title,
@@ -29,7 +30,10 @@ import {
   LinearScale,
   ArcElement,
 } from "chart.js";
+import moment from "moment";
 import { Bar, Doughnut } from "vue-chartjs";
+import { FilterType } from "~/types/enums/FilterType";
+import { Transferencia } from "~/types/Transferencia";
 //******IMPORTS*******"
 
 //******COMPOSABLES*******"
@@ -53,45 +57,14 @@ ChartJS.register(
 //******EMITS*******"
 
 //******VARIAVEIS*******"
-const tooltipVisible = ref(false);
-const tooltipPosition = ref({ x: 0, y: 0 });
-
-const data = {
-  labels: [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ],
-  datasets: [
-    {
-      data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11],
-      label: "Data One",
-      backgroundColor: "surface-variant",
-    },
-  ],
-};
+const baseURL = "https://localhost:7092/api";
+const filterType = ref(FilterType.Last6Months);
+const valoresTransferencias = ref();
+const labelTransferencias = ref();
+const categoriesAnalyticsReturn = ref();
 
 const options = {
   responsive: true,
-};
-
-const doughnutData = {
-  labels: ["VueJs", "EmberJs", "ReactJs", "AngularJs"],
-  datasets: [
-    {
-      backgroundColor: ["#41B883", "#E46651", "#00D8FF", "#DD1B16"],
-      data: [40, 20, 80, 10],
-    },
-  ],
 };
 
 const doughnutOptions = {
@@ -171,7 +144,6 @@ const doughnutOptions = {
     },
   },
 };
-
 //******VARIAVEIS*******"
 
 //******WATCHS*******"
@@ -179,21 +151,100 @@ const doughnutOptions = {
 //******WATCHS*******"
 
 //******COMPUTEDS*******"
+const data = computed(() => {
+  return {
+    labels: labelTransferencias.value,
+    datasets: [
+      {
+        data: valoresTransferencias.value,
+        label: "Spending Total",
+        backgroundColor: "surface-variant",
+      },
+    ],
+  };
+});
 
+const doughnutData = computed(() => {
+  return {
+    labels: ["Alimentação", "Contas Casa", "Pessoal"],
+    datasets: [
+      {
+        backgroundColor: ["#41B883", "#E46651", "#00D8FF"],
+        data: categoriesAnalyticsReturn.value,
+      },
+    ],
+  };
+});
 //******COMPUTEDS*******"
 
 //******LIFECYCLE HOOKS*******"
+const barChart = ref(null);
+onMounted(async () => {
+  await getTransfersByPeriod();
+  await GetCategoriesAnalytics();
+  await nextTick();
 
+  if (barChart.value) {
+    // @ts-ignore
+    const chartInstance = barChart.value.chart;
+
+    if (chartInstance) {
+      chartInstance.update();
+    } else {
+      console.error("A instância do gráfico não está disponível");
+    }
+  }
+});
 //******LIFECYCLE HOOKS*******"
 
 //******METHODS*******"
-const showTooltip = (event: any) => {
-  tooltipPosition.value = { x: event.clientX, y: event.clientY };
-  tooltipVisible.value = true;
+const getTransfersByPeriod = async () => {
+  const filter = {
+    IdUsuario: 1,
+    IdConta: 1,
+    FilterType: "Last6Months",
+  };
+
+  try {
+    let result = await axios.get(`${baseURL}/DashBoard/GetByPeriod`, {
+      params: filter,
+    });
+
+    valoresTransferencias.value = result.data.map(
+      (transferencia: Transferencia) => transferencia.vlTransferencia
+    );
+
+    labelTransferencias.value = result.data.map(
+      (transferencia: Transferencia) =>
+        moment(transferencia.dtTransferencia).format("DD/MM/YYYY HH:mm")
+    );
+
+    return valoresTransferencias.value;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-const hideTooltip = () => {
-  tooltipVisible.value = false;
+const GetCategoriesAnalytics = async () => {
+  const filter = {
+    IdUsuario: 1,
+    IdConta: 1,
+  };
+
+  try {
+    let result = await axios.get(
+      `${baseURL}/DashBoard/GetCategoriesAnalytics`,
+      {
+        params: filter,
+      }
+    );
+
+    categoriesAnalyticsReturn.value = result.data.map(
+      (x: any) => x.totalTransferencias
+    );
+  } catch (error) {
+    console.error(error);
+  }
 };
 //******METHODS*******"
 

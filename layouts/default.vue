@@ -53,13 +53,7 @@
             ></v-text-field>
 
             <v-sheet
-              style="
-                border-radius: 40px;
-                flex-grow: 1;
-                max-height: 100%;
-                overflow-y: auto;
-              "
-              class="pa-6 mt-4 align-center justify-center"
+              class="pa-6 mt-4 align-center justify-center v-sheet-custom"
               elevation="4"
             >
               <slot name="left-sheet"></slot>
@@ -67,16 +61,7 @@
           </v-col>
 
           <v-col cols="12" md="6" class="d-flex flex-column">
-            <v-sheet
-              style="
-                border-radius: 40px;
-                flex-grow: 1;
-                max-height: 100%;
-                overflow-y: auto;
-              "
-              class="pa-6"
-              elevation="4"
-            >
+            <v-sheet class="pa-6 v-sheet-custom" elevation="4">
               <slot name="right-sheet"></slot>
             </v-sheet>
           </v-col>
@@ -152,5 +137,12 @@ a {
 
 .app-bar {
   background-color: #2e2e2e;
+}
+
+.v-sheet-custom {
+  border-radius: 40px;
+  flex-grow: 1;
+  max-height: 100%;
+  overflow-y: auto;
 }
 </style>

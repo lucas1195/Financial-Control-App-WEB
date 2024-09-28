@@ -13,31 +13,34 @@
       </v-img>
       <v-divider></v-divider>
 
-      <router-link v-for="(item, i) in menuItems" :to="item.to">
-        <v-list :lines="false" density="compact" nav>
-          <v-list-item :key="i" :value="item" color="primary">
+      <router-link v-for="(item, i) in menuItems" :to="item.to" :key="i">
+        <v-list :lines="false" nav>
+          <v-list-item :value="item" color="primary">
             <template v-slot:prepend>
-              <v-icon :icon="item.icon"></v-icon>
+              <v-icon
+                :icon="item.icon"
+                style="font-size: 30px; color: black"
+              ></v-icon>
             </template>
 
-            <v-list-item-title v-text="item.text"></v-list-item-title>
+            <v-list-item-title
+              v-text="item.text"
+              style="
+                font-size: 16px;
+                font-style: normal;
+                color: black;
+                font-family: 'Vorkurs', sans-serif;
+              "
+            ></v-list-item-title>
           </v-list-item>
         </v-list>
       </router-link>
     </v-navigation-drawer>
 
-    <v-app-bar color="grey darken-4" elevation="2">
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-app-bar-title>
-        <v-img width="120" />
-      </v-app-bar-title>
-    </v-app-bar>
-
-    <v-main
-      class="bg-grey-lighten-3 d-flex align-center justify-center"
-      style="height: 100vh"
-    >
+    <v-main class="d-flex align-center justify-center v-main-custom">
       <v-container class="pa-5 fill-height">
+        <h2 class="mb-2 h2-custom">Olá, Lucas!</h2>
+        <p class="subtitle">Data e hora: {{ currentDate }}</p>
         <v-row class="fill-height">
           <v-col cols="12" md="6" class="d-flex flex-column">
             <v-text-field
@@ -54,14 +57,14 @@
 
             <v-sheet
               class="pa-6 mt-4 align-center justify-center v-sheet-custom"
-              elevation="4"
+              elevation="6"
             >
               <slot name="left-sheet"></slot>
             </v-sheet>
           </v-col>
 
           <v-col cols="12" md="6" class="d-flex flex-column">
-            <v-sheet class="pa-6 v-sheet-custom" elevation="4">
+            <v-sheet class="pa-6 v-sheet-custom" elevation="6">
               <slot name="right-sheet"></slot>
             </v-sheet>
           </v-col>
@@ -74,6 +77,8 @@
 </template>
 
 <script setup lang="ts">
+import moment from "moment";
+
 //******IMPORTS*******"
 
 //******IMPORTS*******"
@@ -94,10 +99,17 @@
 const drawer = ref(true);
 const menuItems = computed(() => {
   return [
-    { text: "DashBoard", icon: "mdi-folder", to: "/" },
-    { text: "Transactions", icon: "mdi-account-multiple", to: "/Transactions" },
+    { text: "DashBoard", icon: "mdi-finance", to: "/" },
+    { text: "Transactions", icon: "mdi-credit-card", to: "/Transactions" },
+    { text: "Account", icon: "mdi-bank", to: "/Account" },
+    {
+      text: "Financial Plans",
+      icon: "mdi-file-document",
+      to: "/FinancialPlans",
+    },
   ];
 });
+const currentDate = ref(moment().format("DD/MM/YYYY HH:mm"));
 //******VARIAVEIS*******"
 
 //******WATCHS*******"
@@ -135,14 +147,38 @@ a {
   height: 100%;
 }
 
-.app-bar {
-  background-color: #2e2e2e;
-}
-
 .v-sheet-custom {
   border-radius: 40px;
   flex-grow: 1;
   max-height: 100%;
   overflow-y: auto;
+}
+
+.h2-custom {
+  font-family: "Vorkurs", sans-serif;
+  text-align: left; /* Alinha o título à esquerda */
+  margin: 0; /* Remove margens */
+}
+
+h3 {
+  font-family: "Roboto", sans-serif;
+  font-size: 1.5em;
+  color: #666;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.app-bar-background {
+  background-image: url("assets/pexels-hngstrm-1939485.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.v-main-custom {
+  height: 100vh;
+  background-image: url("assets/pexels-hngstrm-1939485.jpg");
+  background-size: cover;
+  background-position: center;
+  max-height: 100%;
 }
 </style>

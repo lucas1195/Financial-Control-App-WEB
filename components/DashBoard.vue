@@ -115,6 +115,17 @@ const data = {
     },
   ],
 };
+
+const page = ref(1);
+const perPage = ref(4);
+const pages = ref(data.transferencias);
+
+const visiblePages = () => {
+  return pages.value.slice(
+    (page.value - 1) * perPage.value,
+    page.value * perPage.value
+  );
+};
 //******VARIAVEIS*******"
 
 //******WATCHS*******"

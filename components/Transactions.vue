@@ -1,12 +1,75 @@
-<template></template>
+<template>
+  <v-card flat>
+    <v-card-title>Latest Spending</v-card-title>
+    <v-card-item>
+      <!-- <v-data-table
+        :items="data.transferencias"
+        :headers="headers"
+        style="height: 550px"
+      ></v-data-table> -->
+      <v-list
+        lines="three"
+        select-strategy="classic"
+        style="max-height: 500px; overflow-y: auto"
+      >
+        <v-list-subheader>General Spendings</v-list-subheader>
+        <v-list-item
+          v-for="(task, index) in visiblePages"
+          :key="index"
+          :value="index"
+        >
+          <template v-slot:prepend="{ isActive }">
+            <v-list-item-action start>
+              <v-btn
+                x-small
+                rounded
+                :icon="getIcon(task)"
+                :color="getColor(task)"
+              >
+              </v-btn>
+            </v-list-item-action>
+          </template>
+          <v-list-item-title :name="index"
+            >{{ task.vlTransferencia }}
+          </v-list-item-title>
+          <v-list-item-subtitle :name="index"
+            >{{ task.dsTransferencia }}
+          </v-list-item-subtitle>
+
+          <template v-slot:append>
+            <v-menu>
+              <template v-slot:activator="{ props }">
+                <v-btn icon="mdi-dots-vertical" v-bind="props" />
+              </template>
+              <v-list>
+                <v-list-item value="1">
+                  <v-list-item-title>Editar</v-list-item-title>
+                </v-list-item>
+                <v-list-item value="2">
+                  <v-list-item-title>Deletar</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </template>
+        </v-list-item>
+        <v-pagination
+          v-if="data.length > 1"
+          v-model="page"
+          :length="Math.ceil(data.length / perPage)"
+        ></v-pagination>
+      </v-list>
+    </v-card-item>
+  </v-card>
+</template>
 
 <script setup lang="ts">
 //******IMPORTS*******"
-
+import { useAxios } from "~/composables/useAxios";
+import { GetAllTransfersReturn } from "~/types/FinancesControl/GetAllTransfersReturn";
 //******IMPORTS*******"
 
 //******COMPOSABLES*******"
-
+const { $axios } = useAxios();
 //******COMPOSABLES*******"
 
 //******PROPS*******"
@@ -18,7 +81,9 @@
 //******EMITS*******"
 
 //******VARIAVEIS*******"
-
+const data = ref<GetAllTransfersReturn[]>([]);
+const page = ref(1);
+const perPage = ref(4);
 //******VARIAVEIS*******"
 
 //******WATCHS*******"
@@ -26,15 +91,62 @@
 //******WATCHS*******"
 
 //******COMPUTEDS*******"
-
+const visiblePages = computed(() => {
+  const start = (page.value - 1) * perPage.value;
+  const end = page.value * perPage.value;
+  return data.value.slice(start, end);
+});
 //******COMPUTEDS*******"
 
 //******LIFECYCLE HOOKS*******"
-
+onMounted(async () => {
+  await GetAllTransfers();
+});
 //******LIFECYCLE HOOKS*******"
 
 //******METHODS*******"
+const GetAllTransfers = async () => {
+  const filter = {
+    IdUsuario: 1,
+    IdConta: 1,
+  };
 
+  try {
+    let result = await $axios.get("Transferencia/GetAllTransactiosByUser", {
+      params: filter,
+    });
+
+    data.value = result.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const getIcon = (transaction: any): string => {
+  switch (transaction.idCategoria) {
+    case 1:
+      return "mdi-food";
+    case 2:
+      return "mdi-home-currency-usd";
+    case 3:
+      return "mdi-account";
+    default:
+      return "mdi-help-circle";
+  }
+};
+
+const getColor = (transaction: any): string => {
+  switch (transaction.idCategoria) {
+    case 1:
+      return "#41B883";
+    case 2:
+      return "#E46651";
+    case 3:
+      return "#2196F3";
+    default:
+      return "#CCCCCC";
+  }
+};
 //******METHODS*******"
 
 //******OUTROS*******"

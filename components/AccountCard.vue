@@ -4,6 +4,7 @@
       <v-card-title>Avaliable Balance</v-card-title>
       <v-card-text
         class="text-h3 mt-12 position-relative d-flex flex-column align-center justify-center text-center"
+        style="font-family: 'Vorkurs', sans-serif"
       >
         $ 5000
       </v-card-text>

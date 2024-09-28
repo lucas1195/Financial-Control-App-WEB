@@ -19,7 +19,6 @@
 
 <script setup lang="ts">
 //******IMPORTS*******"
-import axios from "axios";
 import {
   Chart as ChartJS,
   Title,
@@ -32,6 +31,7 @@ import {
 } from "chart.js";
 import moment from "moment";
 import { Bar, Doughnut } from "vue-chartjs";
+import { useAxios } from "~/composables/useAxios";
 import { FilterType } from "~/types/enums/FilterType";
 import { Transferencia } from "~/types/Transferencia";
 //******IMPORTS*******"
@@ -46,6 +46,8 @@ ChartJS.register(
   Legend,
   ArcElement
 );
+
+const { $axios } = useAxios();
 //******COMPOSABLES*******"
 
 //******PROPS*******"
@@ -57,12 +59,11 @@ ChartJS.register(
 //******EMITS*******"
 
 //******VARIAVEIS*******"
-const baseURL = "https://localhost:7092/api";
 const filterType = ref(FilterType.Last6Months);
 const valoresTransferencias = ref();
 const labelTransferencias = ref();
 const categoriesAnalyticsReturn = ref();
-
+const barChart = ref(null);
 const options = {
   responsive: true,
 };
@@ -169,7 +170,7 @@ const doughnutData = computed(() => {
     labels: ["Alimentação", "Contas Casa", "Pessoal"],
     datasets: [
       {
-        backgroundColor: ["#41B883", "#E46651", "#00D8FF"],
+        backgroundColor: ["#41B883", "#E46651", "#2196F3"],
         data: categoriesAnalyticsReturn.value,
       },
     ],
@@ -178,7 +179,6 @@ const doughnutData = computed(() => {
 //******COMPUTEDS*******"
 
 //******LIFECYCLE HOOKS*******"
-const barChart = ref(null);
 onMounted(async () => {
   await getTransfersByPeriod();
   await GetCategoriesAnalytics();
@@ -206,7 +206,7 @@ const getTransfersByPeriod = async () => {
   };
 
   try {
-    let result = await axios.get(`${baseURL}/DashBoard/GetByPeriod`, {
+    let result = await $axios.get("/DashBoard/GetByPeriod", {
       params: filter,
     });
 
@@ -232,12 +232,9 @@ const GetCategoriesAnalytics = async () => {
   };
 
   try {
-    let result = await axios.get(
-      `${baseURL}/DashBoard/GetCategoriesAnalytics`,
-      {
-        params: filter,
-      }
-    );
+    let result = await $axios.get(`/DashBoard/GetCategoriesAnalytics`, {
+      params: filter,
+    });
 
     categoriesAnalyticsReturn.value = result.data.map(
       (x: any) => x.totalTransferencias

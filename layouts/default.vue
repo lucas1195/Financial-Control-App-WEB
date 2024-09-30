@@ -38,9 +38,9 @@
     </v-navigation-drawer>
 
     <v-main class="d-flex align-center justify-center v-main-custom">
-      <v-container class="pa-5 fill-height">
+      <v-container class="pa-8 fill-height">
         <h2 class="mb-2 h2-custom">Olá, Lucas!</h2>
-        <p class="subtitle">Data e hora: {{ currentDate }}</p>
+
         <v-row class="fill-height">
           <v-col cols="12" md="6" class="d-flex flex-column">
             <v-text-field

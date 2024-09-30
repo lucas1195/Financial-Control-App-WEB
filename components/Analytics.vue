@@ -9,7 +9,7 @@
     d-flex
     class="flex-column align-center text-center doughnut-card"
   >
-    <Doughnut
+    <Pie
       :data="doughnutData"
       :options="doughnutOptions"
       style="height: 20rem; margin-left: 6rem"
@@ -30,7 +30,7 @@ import {
   ArcElement,
 } from "chart.js";
 import moment from "moment";
-import { Bar, Doughnut } from "vue-chartjs";
+import { Bar, Doughnut, Pie } from "vue-chartjs";
 import { useAxios } from "~/composables/useAxios";
 import { FilterType } from "~/types/enums/FilterType";
 import { Transferencia } from "~/types/Transferencia";
@@ -167,10 +167,30 @@ const data = computed(() => {
 
 const doughnutData = computed(() => {
   return {
-    labels: ["Alimentação", "Contas Casa", "Pessoal"],
+    labels: [
+      "Contas da Casa",
+      "Alimentação",
+      "Pessoal",
+      "Lazer",
+      "Assinaturas e Serviços",
+      "Investimentos",
+      "Emergências",
+      "Pets",
+      "Dívidas e Empréstimos",
+    ],
     datasets: [
       {
-        backgroundColor: ["#41B883", "#E46651", "#2196F3"],
+        backgroundColor: [
+          "#E46651", // Contas da Casa (cor existente)
+          "#41B883", // Alimentação (cor existente)
+          "#2196F3", // Pessoal (cor existente)
+          "#F4A261", // Lazer (tom suave)
+          "#A3D5D3", // Assinaturas e Serviços (tom suave)
+          "#B2A4FF", // Investimentos (tom suave)
+          "#F7C5C5", // Emergências (tom suave)
+          "#C1D9A7", // Pets (tom suave)
+          "#D3C4F3", // Dívidas e Empréstimos (tom suave)
+        ],
         data: categoriesAnalyticsReturn.value,
       },
     ],
@@ -201,8 +221,8 @@ onMounted(async () => {
 const getTransfersByPeriod = async () => {
   const filter = {
     IdUsuario: 1,
-    IdConta: 1,
-    FilterType: "Last6Months",
+    IdConta: 2,
+    FilterType: "Last12Months",
   };
 
   try {
@@ -228,7 +248,7 @@ const getTransfersByPeriod = async () => {
 const GetCategoriesAnalytics = async () => {
   const filter = {
     IdUsuario: 1,
-    IdConta: 1,
+    IdConta: 2,
   };
 
   try {

@@ -1,6 +1,6 @@
 <template>
   <v-card flat>
-    <v-card-title>Latest Spending</v-card-title>
+    <v-card-title>All Spendings</v-card-title>
     <v-card-item>
       <!-- <v-data-table
         :items="data.transferencias"
@@ -10,9 +10,8 @@
       <v-list
         lines="three"
         select-strategy="classic"
-        style="max-height: 500px; overflow-y: auto"
+        style="max-height: 550px; overflow-y: auto"
       >
-        <v-list-subheader>General Spendings</v-list-subheader>
         <v-list-item
           v-for="(task, index) in visiblePages"
           :key="index"
@@ -83,7 +82,7 @@ const { $axios } = useAxios();
 //******VARIAVEIS*******"
 const data = ref<GetAllTransfersReturn[]>([]);
 const page = ref(1);
-const perPage = ref(4);
+const perPage = ref(5);
 //******VARIAVEIS*******"
 
 //******WATCHS*******"
@@ -108,7 +107,7 @@ onMounted(async () => {
 const GetAllTransfers = async () => {
   const filter = {
     IdUsuario: 1,
-    IdConta: 1,
+    IdConta: 2,
   };
 
   try {
@@ -125,11 +124,23 @@ const GetAllTransfers = async () => {
 const getIcon = (transaction: any): string => {
   switch (transaction.idCategoria) {
     case 1:
-      return "mdi-food";
-    case 2:
       return "mdi-home-currency-usd";
+    case 2:
+      return "mdi-food";
     case 3:
       return "mdi-account";
+    case 4:
+      return "mdi-movie-open";
+    case 5:
+      return "mdi-television";
+    case 6:
+      return "mdi-chart-line";
+    case 7:
+      return "mdi-alert-circle";
+    case 8:
+      return "mdi-paw";
+    case 9:
+      return "mdi-bank";
     default:
       return "mdi-help-circle";
   }
@@ -138,11 +149,23 @@ const getIcon = (transaction: any): string => {
 const getColor = (transaction: any): string => {
   switch (transaction.idCategoria) {
     case 1:
-      return "#41B883";
-    case 2:
       return "#E46651";
+    case 2:
+      return "#41B883";
     case 3:
       return "#2196F3";
+    case 4:
+      return "#F4A261";
+    case 5:
+      return "#A3D5D3";
+    case 6:
+      return "#B2A4FF";
+    case 7:
+      return "#F7C5C5";
+    case 8:
+      return "#C1D9A7";
+    case 9:
+      return "#D3C4F3";
     default:
       return "#CCCCCC";
   }

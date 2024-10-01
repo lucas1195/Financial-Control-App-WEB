@@ -4,38 +4,30 @@
   <v-card flat>
     <v-card-title>Latest Spending</v-card-title>
     <v-card-item>
-      <v-list
-        lines="three"
-        select-strategy="classic"
-        style="max-height: 200px; overflow-y: auto"
-      >
-        <v-list-subheader>General Spendings</v-list-subheader>
-        <v-list-item
-          v-for="(task, index) in data.transferencias"
-          :key="index"
-          :value="index"
-        >
+      <v-list>
+        <v-list-subheader>Latest Spendings</v-list-subheader>
+        <v-list-item v-for="(task, index) in data" :key="index" :value="index">
           <template v-slot:prepend="{ isActive }">
             <v-list-item-action start>
-              <v-checkbox-btn
-                :name="`btn_${index}`"
-                :model-value="isActive"
-              ></v-checkbox-btn>
+              <v-btn
+                x-small
+                rounded
+                :icon="getIcon(task)"
+                :color="getColor(task)"
+              ></v-btn>
             </v-list-item-action>
           </template>
-          <v-list-item-title :name="index">{{ task.nome }} </v-list-item-title>
+          <v-list-item-title :name="index"
+            >{{ task.vlTransferencia }}
+          </v-list-item-title>
           <v-list-item-subtitle :name="index"
-            >{{ task.descricao }}
+            >{{ task.dsTransferencia }}
           </v-list-item-subtitle>
 
           <template v-slot:append>
             <v-menu>
               <template v-slot:activator="{ props }">
-                <v-btn
-                  icon="mdi-dots-vertical"
-                  color="surface-variant"
-                  v-bind="props"
-                />
+                <v-btn icon="mdi-dots-vertical" flat v-bind="props" />
               </template>
               <v-list>
                 <v-list-item value="1">
@@ -54,12 +46,14 @@
 </template>
 
 <script setup lang="ts">
+import type { Transferencia } from "~/types/Transferencia";
+
 //******IMPORTS*******"
 
 //******IMPORTS*******"
 
 //******COMPOSABLES*******"
-
+const { $axios } = useAxios();
 //******COMPOSABLES*******"
 
 //******PROPS*******"
@@ -71,54 +65,11 @@
 //******EMITS*******"
 
 //******VARIAVEIS*******"
-const data = {
-  transferencias: [
-    {
-      nome: "Pagamento Aluguel",
-      valor: 1200.0,
-      descricao: "Transferência para o aluguel mensal",
-    },
-    {
-      nome: "Pagamento Cartão",
-      valor: 500.0,
-      descricao: "Pagamento da fatura do cartão de crédito",
-    },
-    {
-      nome: "Depósito Conta Poupança",
-      valor: 300.0,
-      descricao: "Transferência para a conta poupança",
-    },
-    {
-      nome: "Compra Supermercado",
-      valor: 250.75,
-      descricao: "Pagamento de compras no supermercado",
-    },
-    {
-      nome: "Transferência para Amigo",
-      valor: 150.0,
-      descricao: "Transferência para amigo por PIX",
-    },
-    {
-      nome: "Transferência para Amigo",
-      valor: 150.0,
-      descricao: "Transferência para amigo por PIX",
-    },
-    {
-      nome: "Transferência para Amigo",
-      valor: 150.0,
-      descricao: "Transferência para amigo por PIX",
-    },
-    {
-      nome: "Transferência para Amigo",
-      valor: 150.0,
-      descricao: "Transferência para amigo por PIX",
-    },
-  ],
-};
+const data = ref<Transferencia[]>([]);
 
 const page = ref(1);
 const perPage = ref(4);
-const pages = ref(data.transferencias);
+const pages = ref(data.value);
 
 const visiblePages = () => {
   return pages.value.slice(
@@ -137,10 +88,70 @@ const visiblePages = () => {
 //******COMPUTEDS*******"
 
 //******LIFECYCLE HOOKS*******"
-
+onMounted(async () => {
+  await GetLatest();
+});
 //******LIFECYCLE HOOKS*******"
 
 //******METHODS*******"
+const GetLatest = async () => {
+  try {
+    let result = await $axios.get(`DashBoard/GetLatest?idUsuario=1&idConta=2`);
+    data.value = result.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const getIcon = (transaction: any): string => {
+  switch (transaction.idCategoria) {
+    case 1:
+      return "mdi-home-currency-usd";
+    case 2:
+      return "mdi-food";
+    case 3:
+      return "mdi-account";
+    case 4:
+      return "mdi-movie-open";
+    case 5:
+      return "mdi-television";
+    case 6:
+      return "mdi-chart-line";
+    case 7:
+      return "mdi-alert-circle";
+    case 8:
+      return "mdi-paw";
+    case 9:
+      return "mdi-bank";
+    default:
+      return "mdi-help-circle";
+  }
+};
+
+const getColor = (transaction: any): string => {
+  switch (transaction.idCategoria) {
+    case 1:
+      return "#E46651";
+    case 2:
+      return "#41B883";
+    case 3:
+      return "#2196F3";
+    case 4:
+      return "#F4A261";
+    case 5:
+      return "#A3D5D3";
+    case 6:
+      return "#B2A4FF";
+    case 7:
+      return "#F7C5C5";
+    case 8:
+      return "#C1D9A7";
+    case 9:
+      return "#D3C4F3";
+    default:
+      return "#CCCCCC";
+  }
+};
 
 //******METHODS*******"
 

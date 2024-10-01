@@ -38,7 +38,7 @@
           <template v-slot:append>
             <v-menu>
               <template v-slot:activator="{ props }">
-                <v-btn icon="mdi-dots-vertical" v-bind="props" />
+                <v-btn icon="mdi-dots-vertical" v-bind="props" flat />
               </template>
               <v-list>
                 <v-list-item value="1">
@@ -55,6 +55,7 @@
           v-if="data.length > 1"
           v-model="page"
           :length="Math.ceil(data.length / perPage)"
+          variant="tonal"
         ></v-pagination>
       </v-list>
     </v-card-item>

@@ -1,6 +1,6 @@
 <template>
   <v-container fluid d-flex>
-    <v-card height="250" color="surface-variant" rounded="lg">
+    <v-card height="275" color="surface-variant" rounded="lg">
       <v-card-title>Avaliable Balance</v-card-title>
       <v-card-text
         class="text-h3 mt-12 position-relative d-flex flex-column align-center justify-center text-center"
@@ -75,9 +75,9 @@
   right: 10px;
 }
 .account-number {
-  bottom: 10px;
-  right: 10px;
-  margin-top: 45px;
-  margin-left: 25px;
+  bottom: 20px;
+  right: 20px;
+  margin-top: 70px;
+  margin-left: 35px;
 }
 </style>

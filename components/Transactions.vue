@@ -2,16 +2,7 @@
   <v-card flat>
     <v-card-title>All Spendings</v-card-title>
     <v-card-item>
-      <!-- <v-data-table
-        :items="data.transferencias"
-        :headers="headers"
-        style="height: 550px"
-      ></v-data-table> -->
-      <v-list
-        lines="three"
-        select-strategy="classic"
-        style="max-height: 550px; overflow-y: auto"
-      >
+      <v-list lines="three" select-strategy="classic">
         <v-list-item
           v-for="(task, index) in visiblePages"
           :key="index"
@@ -83,7 +74,7 @@ const { $axios } = useAxios();
 //******VARIAVEIS*******"
 const data = ref<GetAllTransfersReturn[]>([]);
 const page = ref(1);
-const perPage = ref(5);
+const perPage = ref(6);
 //******VARIAVEIS*******"
 
 //******WATCHS*******"

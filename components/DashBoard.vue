@@ -6,22 +6,26 @@
     <v-card-item>
       <v-list>
         <v-list-subheader>Latest Spendings</v-list-subheader>
-        <v-list-item v-for="(task, index) in data" :key="index" :value="index">
+        <v-list-item
+          v-for="(tansferencia, index) in data"
+          :key="index"
+          :value="index"
+        >
           <template v-slot:prepend="{ isActive }">
             <v-list-item-action start>
               <v-btn
                 x-small
                 rounded
-                :icon="getIcon(task)"
-                :color="getColor(task)"
+                :icon="getIcon(tansferencia)"
+                :color="getColor(tansferencia)"
               ></v-btn>
             </v-list-item-action>
           </template>
           <v-list-item-title :name="index"
-            >{{ task.vlTransferencia }}
+            >{{ tansferencia.vlTransferencia }}
           </v-list-item-title>
           <v-list-item-subtitle :name="index"
-            >{{ task.dsTransferencia }}
+            >{{ tansferencia.dsTransferencia }}
           </v-list-item-subtitle>
 
           <template v-slot:append>
@@ -46,10 +50,8 @@
 </template>
 
 <script setup lang="ts">
-import type { Transferencia } from "~/types/Transferencia";
-
 //******IMPORTS*******"
-
+import type { Transferencia } from "~/types/Transferencia";
 //******IMPORTS*******"
 
 //******COMPOSABLES*******"
@@ -96,7 +98,9 @@ onMounted(async () => {
 //******METHODS*******"
 const GetLatest = async () => {
   try {
-    let result = await $axios.get(`DashBoard/GetLatest?idUsuario=1&idConta=2`);
+    let result = await $axios.get(
+      `DashBoard/GetLatest?idUsuario=1&idConta=2&top=4`
+    );
     data.value = result.data;
   } catch (error) {
     console.error(error);

@@ -77,10 +77,8 @@
 </template>
 
 <script setup lang="ts">
-import moment from "moment";
-
 //******IMPORTS*******"
-
+import moment from "moment";
 //******IMPORTS*******"
 
 //******COMPOSABLES*******"
@@ -156,8 +154,6 @@ a {
 
 .h2-custom {
   font-family: "Vorkurs", sans-serif;
-  text-align: left; /* Alinha o título à esquerda */
-  margin: 0; /* Remove margens */
 }
 
 h3 {

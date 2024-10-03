@@ -12,7 +12,7 @@
     <Pie
       :data="doughnutData"
       :options="doughnutOptions"
-      style="height: 20rem; margin-left: 6rem"
+      style="margin-left: 3rem"
     />
   </v-card>
 </template>
@@ -181,15 +181,15 @@ const doughnutData = computed(() => {
     datasets: [
       {
         backgroundColor: [
-          "#E46651", // Contas da Casa (cor existente)
-          "#41B883", // Alimentação (cor existente)
-          "#2196F3", // Pessoal (cor existente)
-          "#F4A261", // Lazer (tom suave)
-          "#A3D5D3", // Assinaturas e Serviços (tom suave)
-          "#B2A4FF", // Investimentos (tom suave)
-          "#F7C5C5", // Emergências (tom suave)
-          "#C1D9A7", // Pets (tom suave)
-          "#D3C4F3", // Dívidas e Empréstimos (tom suave)
+          "#E46651",
+          "#41B883",
+          "#2196F3",
+          "#F4A261",
+          "#A3D5D3",
+          "#B2A4FF",
+          "#F7C5C5",
+          "#C1D9A7",
+          "#D3C4F3",
         ],
         data: categoriesAnalyticsReturn.value,
       },

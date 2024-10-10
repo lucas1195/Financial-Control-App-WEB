@@ -99,7 +99,7 @@ const menuItems = computed(() => {
   return [
     { text: "DashBoard", icon: "mdi-finance", to: "/" },
     { text: "Transactions", icon: "mdi-credit-card", to: "/Transactions" },
-    { text: "Account", icon: "mdi-bank", to: "/Account" },
+    { text: "Accounts", icon: "mdi-bank", to: "/Accounts" },
     {
       text: "Financial Plans",
       icon: "mdi-file-document",

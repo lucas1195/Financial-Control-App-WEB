@@ -1,10 +1,12 @@
 <template>
   <NuxtLayout>
     <template v-slot:left-sheet>
-      <UserAccount />
+      <AccountList />
     </template>
 
-    <template v-slot:right-sheet> </template>
+    <template v-slot:right-sheet>
+      <AccountForm />
+    </template>
   </NuxtLayout>
 </template>
 

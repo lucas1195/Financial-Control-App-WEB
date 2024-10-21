@@ -93,11 +93,10 @@ const GetAllTransfers = async () => {
   };
 
   try {
-    let result = await $axios.get("Transferencia/GetAllTransactiosByUser", {
-      params: filter,
-    });
-
-    data.value = result.data;
+    // let result = await $axios.get("Transferencia/GetAllTransactiosByUser", {
+    //   params: filter,
+    // });
+    // data.value = result.data;
   } catch (error) {
     console.error(error);
   }

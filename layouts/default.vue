@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer" elevation="4">
-      <v-img height="65" cover color="grey darken-4">
+      <v-img height="65" cover color="#27ae60">
         <v-list>
           <v-list-item
             title="Finances Control"
@@ -19,7 +19,7 @@
             <template v-slot:prepend>
               <v-icon
                 :icon="item.icon"
-                style="font-size: 30px; color: black"
+                style="font-size: 30px; color: #27ae63"
               ></v-icon>
             </template>
 
@@ -38,7 +38,7 @@
     </v-navigation-drawer>
 
     <v-main class="d-flex align-center justify-center v-main-custom">
-      <v-container class="pa-8 fill-height">
+      <v-container>
         <h2 class="mb-2 h2-custom">Olá, Lucas!</h2>
 
         <v-row class="fill-height">
@@ -165,16 +165,15 @@ h3 {
 }
 
 .app-bar-background {
-  background-image: url("assets/pexels-hngstrm-1939485.jpg");
+  background-color: #27ae60;
   background-size: cover;
   background-position: center;
 }
 
 .v-main-custom {
-  height: 100vh;
-  background-image: url("assets/pexels-hngstrm-1939485.jpg");
+  height: 100%;
+  background-color: #27ae60;
   background-size: cover;
   background-position: center;
-  max-height: 100%;
 }
 </style>

@@ -67,6 +67,33 @@ import { useField, useForm } from "vee-validate";
 //******EMITS*******"
 
 //******VARIAVEIS*******"
+const accountModel = ref<Conta>();
+const name = useField("name");
+const phone = useField("phone");
+const email = useField("email");
+const select = useField("select");
+const checkbox = useField("checkbox");
+
+const items = ref(["Item 1", "Item 2", "Item 3", "Item 4"]);
+//******VARIAVEIS*******"
+
+//******WATCHS*******"
+
+//******WATCHS*******"
+
+//******COMPUTEDS*******"
+
+//******COMPUTEDS*******"
+
+//******LIFECYCLE HOOKS*******"
+
+//******LIFECYCLE HOOKS*******"
+
+//******METHODS*******"
+
+//******METHODS*******"
+
+//******OUTROS*******"
 const { handleSubmit, handleReset } = useForm({
   validationSchema: {
     name(value: string | any[]) {
@@ -97,35 +124,9 @@ const { handleSubmit, handleReset } = useForm({
   },
 });
 
-const name = useField("name");
-const phone = useField("phone");
-const email = useField("email");
-const select = useField("select");
-const checkbox = useField("checkbox");
-
-const items = ref(["Item 1", "Item 2", "Item 3", "Item 4"]);
-//******VARIAVEIS*******"
-
-//******WATCHS*******"
-
-//******WATCHS*******"
-
-//******COMPUTEDS*******"
-
-//******COMPUTEDS*******"
-
-//******LIFECYCLE HOOKS*******"
-
-//******LIFECYCLE HOOKS*******"
-
-//******METHODS*******"
 const submit = handleSubmit((values) => {
   alert(JSON.stringify(values, null, 2));
 });
-//******METHODS*******"
-
-//******OUTROS*******"
-
 //******OUTROS*******"
 
 //******EXPOSE*******"

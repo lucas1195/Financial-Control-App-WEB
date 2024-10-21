@@ -108,7 +108,7 @@ const GetLatest = async () => {
 };
 
 const getIcon = (transaction: any): string => {
-  switch (transaction.idCategoria) {
+  switch (transaction.categoryId) {
     case 1:
       return "mdi-home-currency-usd";
     case 2:
@@ -133,7 +133,7 @@ const getIcon = (transaction: any): string => {
 };
 
 const getColor = (transaction: any): string => {
-  switch (transaction.idCategoria) {
+  switch (transaction.categoryId) {
     case 1:
       return "#E46651";
     case 2:

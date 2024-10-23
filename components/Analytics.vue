@@ -33,7 +33,7 @@ import moment from "moment";
 import { Bar, Doughnut, Pie } from "vue-chartjs";
 import { useAxios } from "~/composables/useAxios";
 import { FilterType } from "~/types/enums/FilterType";
-import { Transferencia } from "~/types/Transferencia";
+import { Transfer } from "~/types/Transfer";
 //******IMPORTS*******"
 
 //******COMPOSABLES*******"
@@ -60,8 +60,8 @@ const { $axios } = useAxios();
 
 //******VARIAVEIS*******"
 const filterType = ref(FilterType.Last6Months);
-const valoresTransferencias = ref();
-const labelTransferencias = ref();
+const transfersValues = ref();
+const transfersLabels = ref();
 const categoriesAnalyticsReturn = ref();
 const barChart = ref(null);
 const options = {
@@ -154,10 +154,10 @@ const doughnutOptions = {
 //******COMPUTEDS*******"
 const data = computed(() => {
   return {
-    labels: labelTransferencias.value,
+    labels: transfersLabels.value,
     datasets: [
       {
-        data: valoresTransferencias.value,
+        data: transfersValues.value,
         label: "Spending Total",
         backgroundColor: "surface-variant",
       },
@@ -168,15 +168,15 @@ const data = computed(() => {
 const doughnutData = computed(() => {
   return {
     labels: [
-      "Contas da Casa",
-      "Alimentação",
-      "Pessoal",
-      "Lazer",
-      "Assinaturas e Serviços",
-      "Investimentos",
-      "Emergências",
+      "Household Bills",
+      "Food",
+      "Personal",
+      "Entertainment",
+      "Subscriptions and Services",
+      "Investments",
+      "Emergencies",
       "Pets",
-      "Dívidas e Empréstimos",
+      "Debts and Loans",
     ],
     datasets: [
       {
@@ -220,8 +220,8 @@ onMounted(async () => {
 //******METHODS*******"
 const getTransfersByPeriod = async () => {
   const filter = {
-    IdUsuario: 1,
-    IdConta: 2,
+    userId: 1,
+    accountId: 2,
     FilterType: "Last12Months",
   };
 
@@ -230,16 +230,15 @@ const getTransfersByPeriod = async () => {
       params: filter,
     });
 
-    valoresTransferencias.value = result.data.map(
-      (transferencia: Transferencia) => transferencia.vlTransferencia
+    transfersValues.value = result.data.map(
+      (transfer: Transfer) => transfer.transferAmount
     );
 
-    labelTransferencias.value = result.data.map(
-      (transferencia: Transferencia) =>
-        moment(transferencia.dtTransferencia).format("DD/MM/YYYY HH:mm")
+    transfersLabels.value = result.data.map((transfer: Transfer) =>
+      moment(transfer.transferDate).format("DD/MM/YYYY HH:mm")
     );
 
-    return valoresTransferencias.value;
+    return transfersValues.value;
   } catch (error) {
     console.error(error);
   }
@@ -247,8 +246,8 @@ const getTransfersByPeriod = async () => {
 
 const GetCategoriesAnalytics = async () => {
   const filter = {
-    IdUsuario: 1,
-    IdConta: 2,
+    UserId: 1,
+    AccountId: 2,
   };
 
   try {
@@ -257,7 +256,7 @@ const GetCategoriesAnalytics = async () => {
     });
 
     categoriesAnalyticsReturn.value = result.data.map(
-      (x: any) => x.totalTransferencias
+      (x: any) => x.transfersTotals
     );
   } catch (error) {
     console.error(error);

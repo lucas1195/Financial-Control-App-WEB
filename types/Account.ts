@@ -1,6 +1,6 @@
 import BaseEntity from "./BaseEntity";
 
-export class Conta extends BaseEntity {
+export class Account extends BaseEntity {
   public idConta?: number;
   public idUsuario?: number;
   public numConta?: string;

@@ -39,7 +39,7 @@
 
     <v-main class="d-flex align-center justify-center v-main-custom">
       <v-container>
-        <h2 class="mb-2 h2-custom">Olá, Lucas!</h2>
+        <h1 class="mb-2 h2-custom">Olá, Lucas!</h1>
 
         <v-row class="fill-height">
           <v-col cols="12" md="6" class="d-flex flex-column">
@@ -154,6 +154,8 @@ a {
 
 .h2-custom {
   font-family: "Vorkurs", sans-serif;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 h3 {

@@ -1,10 +1,10 @@
 export class GetAllTransfersReturn {
-  idTransferencia?: number;
-  vlTransferencia?: number;
-  dsTransferencia?: string;
-  dtTransferencia?: Date;
-  idCategoria?: number;
-  nmCategoria?: string;
-  idConta?: number;
-  idUsuario?: number;
+  transferId?: number;
+  transferAmount?: number;
+  transferDescription?: string;
+  tranferDate?: Date;
+  categoryId?: number;
+  categoryName?: string;
+  accountId?: number;
+  userId?: number;
 }

@@ -52,6 +52,7 @@
 <script lang="ts" setup>
 //******IMPORTS*******"
 import { useField, useForm } from "vee-validate";
+import type { Account } from "~/types/Account";
 //******IMPORTS*******"
 
 //******COMPOSABLES*******"
@@ -67,7 +68,7 @@ import { useField, useForm } from "vee-validate";
 //******EMITS*******"
 
 //******VARIAVEIS*******"
-const accountModel = ref<Conta>();
+const accountModel = ref<Account>();
 const name = useField("name");
 const phone = useField("phone");
 const email = useField("email");

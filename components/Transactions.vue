@@ -4,7 +4,7 @@
     <v-card-item>
       <v-list lines="three" select-strategy="classic">
         <v-list-item
-          v-for="(task, index) in visiblePages"
+          v-for="(transfer, index) in visiblePages"
           :key="index"
           :value="index"
         >
@@ -13,17 +13,17 @@
               <v-btn
                 x-small
                 rounded
-                :icon="getIcon(task)"
-                :color="getColor(task)"
+                :icon="getIcon(transfer)"
+                :color="getColor(transfer)"
               >
               </v-btn>
             </v-list-item-action>
           </template>
           <v-list-item-title :name="index"
-            >{{ task.vlTransferencia }}
+            >{{ transfer.transferAmount }}
           </v-list-item-title>
           <v-list-item-subtitle :name="index"
-            >{{ task.dsTransferencia }}
+            >{{ transfer.transferDescription }}
           </v-list-item-subtitle>
 
           <template v-slot:append>
@@ -74,7 +74,7 @@ const { $axios } = useAxios();
 //******VARIAVEIS*******"
 const data = ref<GetAllTransfersReturn[]>([]);
 const page = ref(1);
-const perPage = ref(6);
+const perPage = ref(10);
 //******VARIAVEIS*******"
 
 //******WATCHS*******"
@@ -98,12 +98,12 @@ onMounted(async () => {
 //******METHODS*******"
 const GetAllTransfers = async () => {
   const filter = {
-    IdUsuario: 1,
-    IdConta: 2,
+    UserId: 1,
+    AccountId: 2,
   };
 
   try {
-    let result = await $axios.get("Transfer/GetAllTransactiosByUser", {
+    let result = await $axios.get("Transferencia/GetAllTranfersByUser", {
       params: filter,
     });
 
@@ -114,7 +114,7 @@ const GetAllTransfers = async () => {
 };
 
 const getIcon = (transaction: any): string => {
-  switch (transaction.idCategoria) {
+  switch (transaction.categoryId) {
     case 1:
       return "mdi-home-currency-usd";
     case 2:
@@ -139,7 +139,7 @@ const getIcon = (transaction: any): string => {
 };
 
 const getColor = (transaction: any): string => {
-  switch (transaction.idCategoria) {
+  switch (transaction.categoryId) {
     case 1:
       return "#E46651";
     case 2:

@@ -1,13 +1,11 @@
 <template>
   <NuxtLayout>
-    <template v-slot:left-sheet>
-      <AccountList />
-    </template>
-
-    <template v-slot:right-sheet>
-      <AccountForm />
-    </template>
+    <Account />
   </NuxtLayout>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+definePageMeta({
+  layout: "freedom-layout",
+});
+</script>

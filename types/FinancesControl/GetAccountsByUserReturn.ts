@@ -1,6 +1,6 @@
-import BaseEntity from "./BaseEntity";
+import BaseEntity from "../BaseEntity";
 
-export class Account extends BaseEntity {
+export class GetAccountsByUserReturn extends BaseEntity {
   public accountId?: number;
   public agencyNumber?: string;
   public accountNumber?: string;

@@ -74,7 +74,7 @@ const { $axios } = useAxios();
 //******VARIAVEIS*******"
 const data = ref<GetAllTransfersReturn[]>([]);
 const page = ref(1);
-const perPage = ref(10);
+const perPage = ref(6);
 //******VARIAVEIS*******"
 
 //******WATCHS*******"

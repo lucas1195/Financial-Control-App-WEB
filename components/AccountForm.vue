@@ -1,62 +1,95 @@
 <template>
-  <v-card flat>
+  <v-card class="rounded-lg pa-5" elevation="8">
     <v-card-title> Create a New Account </v-card-title>
-    <v-form @submit.prevent="submit">
-      <v-text-field
-        v-model="name.value.value"
-        :counter="10"
-        :error-messages="name.errorMessage.value"
-        label="Name"
-        :rounded="20"
-        variant="solo-filled"
-      ></v-text-field>
+    <form @submit.prevent="submit">
+      <v-row>
+        <v-col md="6">
+          <v-text-field
+            v-model="accountName.value.value"
+            :counter="10"
+            :error-messages="accountName.errorMessage.value"
+            label="Account Name"
+          ></v-text-field>
+        </v-col>
+        <v-col md="6">
+          <v-text-field
+            v-model="agencyNumber"
+            label="Agency Number"
+          ></v-text-field>
+        </v-col>
+      </v-row>
 
-      <v-text-field
-        v-model="phone.value.value"
-        :counter="7"
-        :error-messages="phone.errorMessage.value"
-        label="Phone Number"
-        variant="solo-filled"
-      ></v-text-field>
+      <v-row>
+        <v-col md="6">
+          <v-text-field
+            v-model="accountNumber"
+            label="Account Number"
+          ></v-text-field>
+        </v-col>
+        <v-col md="6">
+          <v-text-field
+            v-model="institutionName.value.value"
+            :error-messages="institutionName.errorMessage.value"
+            label="Institution Name"
+          ></v-text-field>
+        </v-col>
+      </v-row>
 
-      <v-text-field
-        v-model="email.value.value"
-        :error-messages="email.errorMessage.value"
-        label="E-mail"
-        variant="solo-filled"
-      ></v-text-field>
+      <v-row class="">
+        <v-col md="6">
+          <v-text-field
+            v-model="balance.value.value"
+            :error-messages="balance.errorMessage.value"
+            label="Account Balance"
+          ></v-text-field>
+        </v-col>
+        <v-col md="6">
+          <v-select
+            v-model="accountFlag.value.value"
+            :error-messages="accountFlag.errorMessage.value"
+            :items="accountFlagValues"
+            item-title="accountFlagName"
+            item-value="accountFlagId"
+            label="Account Flag"
+          ></v-select>
+        </v-col>
+      </v-row>
 
-      <v-select
-        v-model="select.value.value"
-        :error-messages="select.errorMessage.value"
-        :items="items"
-        label="Select"
-        variant="solo-filled"
-      ></v-select>
+      <v-row>
+        <v-col md="6">
+          <v-checkbox
+            v-model="transactionType.value.value"
+            :error-messages="transactionType.errorMessage.value"
+            label="Debit"
+            type="checkbox"
+            value="0"
+          ></v-checkbox>
+        </v-col>
+        <v-col md="6">
+          <v-checkbox
+            v-model="transactionType.value.value"
+            :error-messages="transactionType.errorMessage.value"
+            label="Credit"
+            type="checkbox"
+            value="1"
+          ></v-checkbox>
+        </v-col>
+      </v-row>
 
-      <v-checkbox
-        v-model="checkbox.value.value"
-        :error-messages="checkbox.errorMessage.value"
-        label="Option"
-        type="checkbox"
-        value="1"
-      ></v-checkbox>
-
-      <v-btn class="ma-4" type="submit" color="#198754"> submit </v-btn>
-
-      <v-btn @click="handleReset" color="primary"> clear </v-btn>
-    </v-form>
+      <v-btn class="me-4" type="submit" color="#198754">submit</v-btn>
+      <v-btn @click="handleReset" color="primary">clear</v-btn>
+    </form>
   </v-card>
 </template>
 
 <script lang="ts" setup>
 //******IMPORTS*******"
 import { useField, useForm } from "vee-validate";
-import type { Account } from "~/types/Account";
+import { Account } from "~/types/Account";
 //******IMPORTS*******"
 
 //******COMPOSABLES*******"
-
+const { $axios } = useAxios();
 //******COMPOSABLES*******"
 
 //******PROPS*******"
@@ -68,14 +101,21 @@ import type { Account } from "~/types/Account";
 //******EMITS*******"
 
 //******VARIAVEIS*******"
-const accountModel = ref<Account>();
-const name = useField("name");
-const phone = useField("phone");
-const email = useField("email");
-const select = useField("select");
-const checkbox = useField("checkbox");
 
-const items = ref(["Item 1", "Item 2", "Item 3", "Item 4"]);
+const accountFlagValues = ref([
+  {
+    accountFlagId: 2,
+    accountFlagName: "Visa",
+  },
+  {
+    accountFlagId: 3,
+    accountFlagName: "Mastercard",
+  },
+  {
+    accountFlagId: 4,
+    accountFlagName: "American Express",
+  },
+]);
 //******VARIAVEIS*******"
 
 //******WATCHS*******"
@@ -91,46 +131,89 @@ const items = ref(["Item 1", "Item 2", "Item 3", "Item 4"]);
 //******LIFECYCLE HOOKS*******"
 
 //******METHODS*******"
-
-//******METHODS*******"
-
-//******OUTROS*******"
 const { handleSubmit, handleReset } = useForm({
   validationSchema: {
-    name(value: string | any[]) {
+    accountName(value: any) {
       if (value?.length >= 2) return true;
 
-      return "Name needs to be at least 2 characters.";
+      return "Account Name needs to be at least 2 characters.";
     },
-    phone(value: string) {
-      if (/^[0-9-]{7,}$/.test(value)) return true;
+    institutionName(value: any) {
+      if (value?.length >= 2) return true;
 
-      return "Phone number needs to be at least 7 digits.";
+      return "Institution Name needs to be at least 2 characters.";
     },
-    email(value: string) {
-      if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true;
+    balance(value: any) {
+      if (!value) {
+        return "Balance is required.";
+      }
 
-      return "Must be a valid e-mail.";
+      if (isNaN(Number(value))) {
+        return "Balance must be a number.";
+      }
+
+      if (value < 0) {
+        return "Balance cannot be negative.";
+      }
+
+      return true;
     },
-    select(value: boolean) {
+    accountFlag(value: any) {
       if (value) return true;
 
-      return "Select an item.";
+      return "Select an Account Flag.";
     },
-    checkbox(value: string) {
-      if (value === "1") return true;
+    transactionType(value: any) {
+      if (value) return true;
 
-      return "Must be checked.";
+      return "You must select either Debit or Credit.";
     },
   },
 });
 
-const submit = handleSubmit((values) => {
-  alert(JSON.stringify(values, null, 2));
+const agencyNumber = ref(null);
+const accountNumber = ref(null);
+const accountName = useField("accountName");
+const institutionName = useField("institutionName");
+const accountFlag = useField("accountFlag");
+const balance = useField("balance");
+const transactionType = useField("transactionType");
+
+const submit = handleSubmit(async (values) => {
+  try {
+    let params = new Account();
+
+    params.userId = 1;
+    params.agencyNumber = agencyNumber.value || undefined;
+    params.accountNumber = accountNumber.value || undefined;
+    params.accountName = String(values.accountName);
+    params.institutionName = String(values.institutionName);
+    params.accountFlagId = Number(values.accountFlag);
+    params.balance = Number(values.balance);
+    params.transactionType = Number(values.transactionType);
+
+    // alert(JSON.stringify(params, null, 2));
+
+    await $axios.post("Account/InsertAccount", params);
+  } catch (error) {
+    console.error(error);
+  } finally {
+  }
 });
+//******METHODS*******"
+
+//******OUTROS*******"
+
 //******OUTROS*******"
 
 //******EXPOSE*******"
 
 //******EXPOSE*******"
 </script>
+
+<style scoped>
+.v-col {
+  padding-bottom: 0;
+  padding-top: 0;
+}
+</style>

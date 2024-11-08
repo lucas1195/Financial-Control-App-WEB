@@ -1,6 +1,6 @@
 <template>
   <v-container fluid d-flex>
-    <v-card height="275" color="surface-variant" rounded="lg">
+    <v-card height="275" color="surface-variant" rounded="lg" elevation="8">
       <v-card-title>Avaliable Balance</v-card-title>
       <v-card-text
         class="text-h3 mt-12 position-relative d-flex flex-column align-center justify-center text-center"

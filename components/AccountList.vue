@@ -1,51 +1,18 @@
 <template>
-  <v-list lines="three" select-strategy="classic">
-    <v-list-item
-      v-for="(task, index) in visiblePages"
-      :key="index"
-      :value="index"
-    >
-      <template v-slot:prepend="{ isActive }">
-        <v-list-item-action start>
-          <v-btn x-small rounded :icon="getIcon(task)" :color="getColor(task)">
-          </v-btn>
-        </v-list-item-action>
-      </template>
-      <v-list-item-title :name="index"
-        >{{ task.vlTransferencia }}
-      </v-list-item-title>
-      <v-list-item-subtitle :name="index"
-        >{{ task.dsTransferencia }}
-      </v-list-item-subtitle>
-
-      <template v-slot:append>
-        <v-menu>
-          <template v-slot:activator="{ props }">
-            <v-btn icon="mdi-dots-vertical" v-bind="props" flat />
-          </template>
-          <v-list>
-            <v-list-item value="1">
-              <v-list-item-title>Editar</v-list-item-title>
-            </v-list-item>
-            <v-list-item value="2">
-              <v-list-item-title>Deletar</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </template>
-    </v-list-item>
-    <v-pagination
-      v-if="data.length > 1"
-      v-model="page"
-      :length="Math.ceil(data.length / perPage)"
-      variant="tonal"
-    ></v-pagination>
-  </v-list>
+  <v-container class="table-container">
+    <v-data-table
+      :items="accountsReturn"
+      :headers="headers"
+      class="rounded-lg pa-5 custom-elevation"
+      elevation="8"
+    ></v-data-table>
+  </v-container>
 </template>
 
 <script lang="ts" setup>
 //******IMPORTS*******"
 import { useAxios } from "~/composables/useAxios";
+import type { GetAccountsByUserReturn } from "~/types/FinancesControl/GetAccountsByUserReturn";
 import { GetAllTransfersReturn } from "~/types/FinancesControl/GetAllTransfersReturn";
 //******IMPORTS*******"
 
@@ -63,8 +30,71 @@ const { $axios } = useAxios();
 
 //******VARIAVEIS*******"
 const data = ref<GetAllTransfersReturn[]>([]);
+const accountsReturn = ref<GetAccountsByUserReturn[]>([]);
 const page = ref(1);
 const perPage = ref(6);
+const headers = ref([
+  {
+    title: "Account ID",
+    align: "center",
+    key: "accountId",
+    sortable: true,
+  },
+  {
+    title: "User ID",
+    align: "center",
+    key: "userId",
+    sortable: true,
+  },
+  {
+    title: "User Name",
+    align: "start",
+    key: "userName",
+    sortable: true,
+  },
+  {
+    title: "Institution Name",
+    align: "start",
+    key: "institutionName",
+    sortable: true,
+  },
+  {
+    title: "Agency Number",
+    align: "center",
+    key: "agencyNumber",
+    sortable: true,
+  },
+  {
+    title: "Account Number",
+    align: "center",
+    key: "accountNumber",
+    sortable: true,
+  },
+  {
+    title: "Balance",
+    align: "end",
+    key: "balance",
+    sortable: true,
+  },
+  {
+    title: "Account Flag ID",
+    align: "center",
+    key: "accountFlagId",
+    sortable: true,
+  },
+  {
+    title: "Account Flag Name",
+    align: "start",
+    key: "accountFlagName",
+    sortable: true,
+  },
+  {
+    title: "Transaction Type",
+    align: "center",
+    key: "transactionType",
+    sortable: true,
+  },
+]);
 //******VARIAVEIS*******"
 
 //******WATCHS*******"
@@ -81,74 +111,17 @@ const visiblePages = computed(() => {
 
 //******LIFECYCLE HOOKS*******"
 onMounted(async () => {
-  await GetAllTransfers();
+  await GetAllAccountsByUser();
 });
 //******LIFECYCLE HOOKS*******"
 
 //******METHODS*******"
-const GetAllTransfers = async () => {
-  const filter = {
-    IdUsuario: 1,
-    IdConta: 2,
-  };
-
+const GetAllAccountsByUser = async () => {
   try {
-    // let result = await $axios.get("Transferencia/GetAllTransactiosByUser", {
-    //   params: filter,
-    // });
-    // data.value = result.data;
+    let result = await $axios.get("Account/GetAccountsByUser?UserId=1");
+    accountsReturn.value = result.data;
   } catch (error) {
     console.error(error);
-  }
-};
-
-const getIcon = (transaction: any): string => {
-  switch (transaction.idCategoria) {
-    case 1:
-      return "mdi-home-currency-usd";
-    case 2:
-      return "mdi-food";
-    case 3:
-      return "mdi-account";
-    case 4:
-      return "mdi-movie-open";
-    case 5:
-      return "mdi-television";
-    case 6:
-      return "mdi-chart-line";
-    case 7:
-      return "mdi-alert-circle";
-    case 8:
-      return "mdi-paw";
-    case 9:
-      return "mdi-bank";
-    default:
-      return "mdi-help-circle";
-  }
-};
-
-const getColor = (transaction: any): string => {
-  switch (transaction.idCategoria) {
-    case 1:
-      return "#E46651";
-    case 2:
-      return "#41B883";
-    case 3:
-      return "#2196F3";
-    case 4:
-      return "#F4A261";
-    case 5:
-      return "#A3D5D3";
-    case 6:
-      return "#B2A4FF";
-    case 7:
-      return "#F7C5C5";
-    case 8:
-      return "#C1D9A7";
-    case 9:
-      return "#D3C4F3";
-    default:
-      return "#CCCCCC";
   }
 };
 //******METHODS*******"
@@ -161,3 +134,14 @@ const getColor = (transaction: any): string => {
 
 //******EXPOSE*******"
 </script>
+
+<style scoped>
+.custom-elevation {
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2), 0px 8px 24px rgba(0, 0, 0, 0.15);
+  width: 100%;
+}
+
+.table-container {
+  padding: 0;
+}
+</style>

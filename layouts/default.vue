@@ -98,7 +98,7 @@ import moment from "moment";
 const drawer = ref(true);
 const menuItems = computed(() => {
   return [
-    { text: "DashBoard", icon: "mdi-finance", to: "/" },
+    { text: "DashBoard", icon: "mdi-finance", to: "/DashBoard" },
     { text: "Transactions", icon: "mdi-credit-card", to: "/Transactions" },
     { text: "Accounts", icon: "mdi-bank", to: "/Accounts" },
     {

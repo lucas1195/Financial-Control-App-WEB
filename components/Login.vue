@@ -1,6 +1,6 @@
 <template>
-  <div class="card-container">
-    <v-card class="login-card" elevation="8">
+  <div class="card-container" color="teal-darken-3">
+    <v-card class="login-card" elevation="12">
       <v-row align="center" justify="center" class="mt-2">
         <v-img
           src="assets/img/icon.png"
@@ -87,7 +87,7 @@ const login = async () => {
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #27ae60;
+  background-color: #00695c;
 }
 
 .login-card {

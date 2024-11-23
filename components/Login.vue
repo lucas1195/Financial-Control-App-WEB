@@ -4,7 +4,7 @@
       <v-row align="center" justify="center" class="mt-2">
         <v-img
           src="assets/img/icon.png"
-          max-width="50"
+          max-width="60"
           aspect-ratio="1"
           class="mr-4 logo-img"
         ></v-img>
@@ -37,6 +37,7 @@
       </form>
       <v-card-actions class="justify-center">
         <v-btn
+          :loading="loading"
           color="teal-darken-3"
           variant="elevated"
           rounded="xl"
@@ -53,6 +54,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
+const loading = ref(false);
 const email = ref("");
 const password = ref("");
 const router = useRouter();
@@ -61,6 +63,7 @@ const isClient = !import.meta.server;
 
 const login = async () => {
   try {
+    loading.value = true;
     const response = await $axios.post("/User/login", {
       userEmail: email.value,
       password: password.value,

@@ -1,6 +1,6 @@
 <template>
   <v-card class="rounded-lg pa-5" elevation="8">
-    <v-card-title> Create a New Account </v-card-title>
+    <v-card-title class="mb-4"> Create a New Account </v-card-title>
     <form @submit.prevent="submit">
       <v-row>
         <v-col md="6">
@@ -13,7 +13,7 @@
         </v-col>
         <v-col md="6">
           <v-text-field
-            v-model="agencyNumber"
+            v-model="agencyNumber.value.value"
             label="Agency Number"
           ></v-text-field>
         </v-col>
@@ -22,7 +22,7 @@
       <v-row>
         <v-col md="6">
           <v-text-field
-            v-model="accountNumber"
+            v-model="accountNumber.value.value"
             label="Account Number"
           ></v-text-field>
         </v-col>
@@ -75,9 +75,10 @@
           ></v-checkbox>
         </v-col>
       </v-row>
-
-      <v-btn class="me-4" type="submit" color="#198754">submit</v-btn>
-      <v-btn @click="handleReset" color="primary">clear</v-btn>
+      <div class="mt-4">
+        <v-btn class="me-4" type="submit" color="#198754">submit</v-btn>
+        <v-btn @click="handleReset" color="primary">clear</v-btn>
+      </div>
     </form>
   </v-card>
 </template>
@@ -101,7 +102,6 @@ const { $axios } = useAxios();
 //******EMITS*******"
 
 //******VARIAVEIS*******"
-
 const accountFlagValues = ref([
   {
     accountFlagId: 2,
@@ -143,6 +143,12 @@ const { handleSubmit, handleReset } = useForm({
 
       return "Institution Name needs to be at least 2 characters.";
     },
+    agencyNumber() {
+      return true;
+    },
+    accountNumber() {
+      return true;
+    },
     balance(value: any) {
       if (!value) {
         return "Balance is required.";
@@ -171,8 +177,8 @@ const { handleSubmit, handleReset } = useForm({
   },
 });
 
-const agencyNumber = ref(null);
-const accountNumber = ref(null);
+const agencyNumber = useField("agencyNumber");
+const accountNumber = useField("accountNumber");
 const accountName = useField("accountName");
 const institutionName = useField("institutionName");
 const accountFlag = useField("accountFlag");
@@ -183,16 +189,13 @@ const submit = handleSubmit(async (values) => {
   try {
     let params = new Account();
 
-    params.userId = 1;
-    params.agencyNumber = agencyNumber.value || undefined;
-    params.accountNumber = accountNumber.value || undefined;
-    params.accountName = String(values.accountName);
-    params.institutionName = String(values.institutionName);
+    params.agencyNumber = values.agencyNumber;
+    params.accountNumber = values.accountNumber;
+    params.accountName = values.accountName;
+    params.institutionName = values.institutionName;
     params.accountFlagId = Number(values.accountFlag);
     params.balance = Number(values.balance);
     params.transactionType = Number(values.transactionType);
-
-    // alert(JSON.stringify(params, null, 2));
 
     await $axios.post("Account/InsertAccount", params);
   } catch (error) {

@@ -220,7 +220,6 @@ onMounted(async () => {
 //******METHODS*******"
 const getTransfersByPeriod = async () => {
   const filter = {
-    userId: 1,
     accountId: 2,
     FilterType: "Last12Months",
   };
@@ -246,7 +245,6 @@ const getTransfersByPeriod = async () => {
 
 const GetCategoriesAnalytics = async () => {
   const filter = {
-    UserId: 1,
     AccountId: 2,
   };
 

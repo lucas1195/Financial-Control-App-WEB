@@ -118,7 +118,7 @@ onMounted(async () => {
 //******METHODS*******"
 const GetAllAccountsByUser = async () => {
   try {
-    let result = await $axios.get("Account/GetAccountsByUser?UserId=1");
+    let result = await $axios.get("Account/GetAccountsByUser");
     accountsReturn.value = result.data;
   } catch (error) {
     console.error(error);

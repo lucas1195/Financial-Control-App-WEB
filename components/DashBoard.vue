@@ -98,9 +98,7 @@ onMounted(async () => {
 //******METHODS*******"
 const GetLatest = async () => {
   try {
-    let result = await $axios.get(
-      `DashBoard/GetLatest?userId=1&accountId=2&top=4`
-    );
+    let result = await $axios.get(`DashBoard/GetLatest?AccountId=2&top=4`);
     data.value = result.data;
   } catch (error) {
     console.error(error);

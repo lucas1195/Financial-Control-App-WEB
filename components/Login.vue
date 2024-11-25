@@ -80,6 +80,8 @@ const login = async () => {
   } catch (error) {
     console.error("Erro no login:", error);
     alert("Credenciais inválidas");
+  } finally {
+    loading.value = false;
   }
 };
 </script>

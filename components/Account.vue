@@ -1,6 +1,6 @@
 <template>
   <AccountForm />
-  <v-divider class="ma-10" />
+  <v-divider class="ma-4" />
   <AccountList />
 </template>
 

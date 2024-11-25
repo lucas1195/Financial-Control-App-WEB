@@ -98,7 +98,6 @@ onMounted(async () => {
 //******METHODS*******"
 const GetAllTransfers = async () => {
   const filter = {
-    UserId: 1,
     AccountId: 2,
   };
 

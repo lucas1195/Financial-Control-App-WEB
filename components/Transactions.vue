@@ -102,7 +102,7 @@ const GetAllTransfers = async () => {
   };
 
   try {
-    let result = await $axios.get("Transferencia/GetAllTranfersByUser", {
+    let result = await $axios.get("Transfer/GetAllTranfersByUser", {
       params: filter,
     });
 

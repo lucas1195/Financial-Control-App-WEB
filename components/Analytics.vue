@@ -192,6 +192,28 @@ const doughnutData = computed(() => {
     ],
   };
 });
+
+const financialPlanLogsData = computed(() => {
+  return {
+    labels: ["Segunda", "Terça", "Personal"],
+    datasets: [
+      {
+        backgroundColor: [
+          "#E46651",
+          "#41B883",
+          "#2196F3",
+          "#F4A261",
+          "#A3D5D3",
+          "#B2A4FF",
+          "#F7C5C5",
+          "#C1D9A7",
+          "#D3C4F3",
+        ],
+        data: categoriesAnalyticsReturn.value,
+      },
+    ],
+  };
+});
 //******COMPUTEDS*******"
 
 //******LIFECYCLE HOOKS*******"

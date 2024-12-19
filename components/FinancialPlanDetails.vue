@@ -13,7 +13,7 @@
         <v-col class="text-center">
           <div class="d-flex justify-start align-start mb-2">Priority:</div>
           <v-progress-linear
-            color="light-blue"
+            color="#FF5733"
             height="10"
             model-value="10"
             striped
@@ -26,7 +26,7 @@
         <v-col class="text-center">
           <div class="d-flex justify-start align-start mb-2">Personal:</div>
           <v-progress-linear
-            color="light-green-darken-4"
+            color="#4A90E2"
             height="10"
             model-value="20"
             striped
@@ -38,7 +38,7 @@
         <v-col class="text-center">
           <div class="d-flex justify-start align-start mb-2">Savings:</div>
           <v-progress-linear
-            color="lime"
+            color="#66BB6A"
             height="10"
             model-value="45"
             striped
@@ -48,7 +48,20 @@
         </v-col>
       </v-row>
     </div>
+
+    <v-row
+      class="d-flex justify-center align-center mt-16"
+      align="center"
+      justify="center"
+    >
+      <v-btn class="mr-4">Go Back</v-btn>
+      <v-btn @click="showDialogFullLogs = true">Full Logs</v-btn>
+    </v-row>
   </v-card>
+  <FinancialPlanFullLogsDialog
+    :showDialog="showDialogFullLogs"
+    @close="showDialogFullLogs = false"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -64,10 +77,9 @@ import {
   PointElement,
   LineElement,
 } from "chart.js";
-import moment from "moment";
 import { Bar, Doughnut, Pie, Line } from "vue-chartjs";
 import { useAxios } from "~/composables/useAxios";
-import type { Transfer } from "~/types/Transfer";
+import type { FinancialPlanLogs } from "~/types/FinancesControl/FinancialPlanLogs";
 
 ChartJS.register(
   CategoryScale,
@@ -86,33 +98,25 @@ const { $axios } = useAxios();
 const options = {
   responsive: true,
 };
-const transfersValues = ref();
-const transfersLabels = ref();
+
+const priorityList = ref<number[]>([]);
+const personalList = ref<number[]>([]);
+const showDialogFullLogs = ref(false);
 
 onMounted(async () => {
-  await getTransfersByPeriod();
+  await GetFinancialPlanLogs();
 });
 
-const getTransfersByPeriod = async () => {
-  const filter = {
-    accountId: 2,
-    FilterType: "Last12Months",
-  };
-
+const GetFinancialPlanLogs = async () => {
   try {
-    let result = await $axios.get("/DashBoard/GetByPeriod", {
-      params: filter,
-    });
-
-    transfersValues.value = result.data.map(
-      (transfer: Transfer) => transfer.transferAmount
+    let result = await $axios.get<FinancialPlanLogs[]>(
+      "/FinancialPlan/GetFinancialPlanLogs?financialPlanId=1"
     );
 
-    transfersLabels.value = result.data.map((transfer: Transfer) =>
-      moment(transfer.transferDate).format("DD/MM/YYYY HH:mm")
-    );
+    let response = result.data;
 
-    return transfersValues.value;
+    priorityList.value = response.map((x) => x.prioritySpent);
+    personalList.value = response.map((x) => x.personalSpent);
   } catch (error) {
     console.error(error);
   }
@@ -120,13 +124,28 @@ const getTransfersByPeriod = async () => {
 
 const data = computed(() => {
   return {
-    labels: transfersLabels.value,
+    labels: [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ],
     datasets: [
       {
-        data: transfersValues.value,
-        label: "Spending Total",
-        backgroundColor: "surface-variant",
-        borderColor: "#7F8C8D",
+        data: priorityList.value,
+        label: "Priority Total",
+        backgroundColor: "#FFA07A",
+        borderColor: "#FF5733",
+        borderWidth: 2,
+      },
+      {
+        data: personalList.value,
+        label: "Personal Total",
+        backgroundColor: "#87CEFA",
+        borderColor: "#4A90E2",
         borderWidth: 2,
       },
     ],

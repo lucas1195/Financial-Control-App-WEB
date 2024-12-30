@@ -1,6 +1,6 @@
 <template>
   <div class="pa-4 text-center">
-    <v-dialog max-width="800" v-model="props.showDialog">
+    <v-dialog max-width="1200" v-model="props.showDialog">
       <v-card>
         <template v-slot:text>
           <v-card class="pa-2" flat>
@@ -10,6 +10,7 @@
                   style="
                     font-weight: 600;
                     font-style: unset;
+                    font-size: 1.3rem;
                     font-family: 'Vorkurs', sans-serif;
                   "
                 >
@@ -21,9 +22,15 @@
                   class="d-flex justify-center align-center mt-6"
                   align="center"
                   justify="center"
-                  style="color: #ff3333"
+                  :style="{
+                    color: Number(data.weekBalance) < 0 ? '#ff3333' : '#33cc33',
+                    fontWeight: '900',
+                    fontStyle: 'unset',
+                    fontSize: '1.8rem',
+                    fontFamily: 'Vorkurs, sans-serif',
+                  }"
                 >
-                  R$800
+                  {{ formatCurrency(data.weekBalance) }}
                 </p>
                 <v-divider class="ma-8" />
               </div>
@@ -118,6 +125,7 @@ const formattedData = computed(() => {
 
     return {
       weekStart: item.weekStartDate,
+      weekBalance: item.weekBalance,
       data: {
         labels: [
           "Sunday",
@@ -167,6 +175,17 @@ const GetFullLogs = async () => {
   } catch (error) {
     console.error(error);
   }
+};
+
+const formatCurrency = (value: Number | undefined) => {
+  if (!value) {
+    return "";
+  }
+
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(Number(value));
 };
 //******METHODS*******"
 

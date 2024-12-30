@@ -9,7 +9,7 @@
     d-flex
     class="flex-column align-center text-center doughnut-card"
   >
-    <Pie :data="doughnutData" :options="doughnutOptions" />
+    <Doughnut :data="doughnutData" :options="doughnutOptions" />
   </v-card>
 </template>
 

@@ -20,7 +20,7 @@
             </v-list-item-action>
           </template>
           <v-list-item-title :name="index"
-            >{{ transfer.transferAmount }}
+            >{{ formatCurrency(transfer.transferAmount) }}
           </v-list-item-title>
           <v-list-item-subtitle :name="index"
             >{{ transfer.transferDescription }}
@@ -162,7 +162,16 @@ const getColor = (transaction: any): string => {
   }
 };
 //******METHODS*******"
+const formatCurrency = (value: Number | undefined) => {
+  if (!value) {
+    return "";
+  }
 
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(Number(value));
+};
 //******OUTROS*******"
 
 //******OUTROS*******"

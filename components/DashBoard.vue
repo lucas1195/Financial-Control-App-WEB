@@ -7,7 +7,7 @@
       <v-list>
         <v-list-subheader>Latest Spendings</v-list-subheader>
         <v-list-item
-          v-for="(tansfer, index) in data"
+          v-for="(transfer, index) in data"
           :key="index"
           :value="index"
         >
@@ -16,16 +16,16 @@
               <v-btn
                 x-small
                 rounded
-                :icon="getIcon(tansfer)"
-                :color="getColor(tansfer)"
+                :icon="getIcon(transfer)"
+                :color="getColor(transfer)"
               ></v-btn>
             </v-list-item-action>
           </template>
           <v-list-item-title :name="index"
-            >{{ tansfer.transferAmount }}
+            >{{ formatCurrency(transfer.transferAmount) }}
           </v-list-item-title>
           <v-list-item-subtitle :name="index"
-            >{{ tansfer.transferDescription }}
+            >{{ transfer.transferDescription }}
           </v-list-item-subtitle>
 
           <template v-slot:append>
@@ -155,6 +155,16 @@ const getColor = (transaction: any): string => {
   }
 };
 
+const formatCurrency = (value: Number | undefined) => {
+  if (!value) {
+    return "";
+  }
+
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(Number(value));
+};
 //******METHODS*******"
 
 //******OUTROS*******"

@@ -5,7 +5,11 @@
       :headers="headers"
       class="rounded-lg pa-5 custom-elevation"
       elevation="8"
-    ></v-data-table>
+    >
+      <template v-slot:item.transactionType="{ item }">
+        {{ item.transactionType == 0 ? "Debit" : "Credit" }}
+      </template>
+    </v-data-table>
   </v-container>
 </template>
 
@@ -13,7 +17,6 @@
 //******IMPORTS*******"
 import { useAxios } from "~/composables/useAxios";
 import type { GetAccountsByUserReturn } from "~/types/FinancesControl/GetAccountsByUserReturn";
-import { GetAllTransfersReturn } from "~/types/FinancesControl/GetAllTransfersReturn";
 //******IMPORTS*******"
 
 //******COMPOSABLES*******"
@@ -29,10 +32,7 @@ const { $axios } = useAxios();
 //******EMITS*******"
 
 //******VARIAVEIS*******"
-const data = ref<GetAllTransfersReturn[]>([]);
 const accountsReturn = ref<GetAccountsByUserReturn[]>([]);
-const page = ref(1);
-const perPage = ref(6);
 const headers = ref([
   {
     title: "Account ID",
@@ -102,11 +102,7 @@ const headers = ref([
 //******WATCHS*******"
 
 //******COMPUTEDS*******"
-const visiblePages = computed(() => {
-  const start = (page.value - 1) * perPage.value;
-  const end = page.value * perPage.value;
-  return data.value.slice(start, end);
-});
+
 //******COMPUTEDS*******"
 
 //******LIFECYCLE HOOKS*******"

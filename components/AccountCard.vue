@@ -11,15 +11,39 @@
       <v-card height="275" color="surface-variant" rounded="lg" elevation="8">
         <v-card-title>{{ account.institutionName }}</v-card-title>
         <v-card-text
-          class="text-h3 mt-12 position-relative d-flex flex-column align-center justify-center text-center"
-          style="font-family: 'Vorkurs', sans-serif"
+          class="mt-12 position-relative d-flex flex-column align-center justify-center text-center"
         >
-          {{ formatCurrency(account.balance) }}
+          <v-row>
+            <div
+              v-if="showBalance"
+              class="text-h3"
+              style="font-family: 'Vorkurs', sans-serif"
+            >
+              {{ formatCurrency(account.balance) }}
+            </div>
+            <div v-else>
+              <p class="text-h3">******</p>
+            </div>
+            <v-icon
+              v-if="!showBalance"
+              icon="mdi mdi-eye-outline"
+              @click="showBalance = !showBalance"
+              size="x-small"
+              class="ml-2"
+            ></v-icon>
+            <v-icon
+              v-else
+              icon="mdi-eye-off-outline"
+              @click="showBalance = !showBalance"
+              size="x-small"
+              class="ml-2"
+            ></v-icon>
+          </v-row>
         </v-card-text>
         <v-row>
           <p class="account-number">{{ account.accountNumber }}</p>
           <v-img
-            src="assets/masterCardLogo.png"
+            :src="SelectAccountFlagImg(account.accountFlagId)"
             width="50"
             class="account-card"
             rounded="lg"
@@ -35,6 +59,9 @@
 //******IMPORTS*******"
 import { GetAccountsByUserReturn } from "~/types/FinancesControl/GetAccountsByUserReturn";
 import { useAxios } from "~/composables/useAxios";
+import visaLogo from "~/assets/img/AccountFlagLogos/visaLogo.jpg";
+import masterCardLogo from "~/assets/img/AccountFlagLogos/masterCardLogo.png";
+import americanExpressLogo from "~/assets/img/AccountFlagLogos/americanExpressLogo.png";
 //******IMPORTS*******"
 
 //******COMPOSABLES*******"
@@ -52,6 +79,7 @@ const { $axios } = useAxios();
 //******VARIAVEIS*******"
 const accountsReturn = ref<GetAccountsByUserReturn[]>([]);
 const loading = ref(false);
+const showBalance = ref(false);
 //******VARIAVEIS*******"
 
 //******WATCHS*******"
@@ -94,9 +122,19 @@ const formatCurrency = (value: Number | undefined) => {
 
 const onCarouselChange = (newIndex: any) => {
   const currentAccount = accountsReturn.value[newIndex];
-  alert(
-    `Carousel OnChange is working! Account ID: ${currentAccount.accountId}`
-  );
+};
+
+const SelectAccountFlagImg = (accountFlagId?: number) => {
+  switch (accountFlagId) {
+    case 2:
+      return visaLogo;
+    case 3:
+      return masterCardLogo;
+    case 4:
+      return americanExpressLogo;
+    default:
+      return "";
+  }
 };
 //******METHODS*******"
 

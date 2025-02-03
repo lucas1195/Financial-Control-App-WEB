@@ -8,7 +8,7 @@
           aspect-ratio="1"
           class="mr-4 logo-img"
         ></v-img>
-        <div class="logo-title">Finances App</div>
+        <div class="logo-title">Financial App</div>
       </v-row>
       <v-divider class="ma-6" />
       <v-card-title class="d-flex flex-column align-items-center text-center">
@@ -64,16 +64,14 @@ const isClient = !import.meta.server;
 const login = async () => {
   try {
     loading.value = true;
-    const response = await $axios.post("/User/login", {
+    const response = await $axios.post("/Auth/login", {
       userEmail: email.value,
       password: password.value,
     });
 
-    if (response.status == 200) {
-      if (isClient) {
-        const token = response.data.token;
-        localStorage.setItem("token", token);
-      }
+    if (response.status == 200 && isClient) {
+      const token = response.data.token;
+      localStorage.setItem("token", token);
 
       router.push("/DashBoard");
     }

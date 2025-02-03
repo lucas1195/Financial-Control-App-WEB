@@ -1,7 +1,7 @@
 <template>
   <v-card flat d-flex class="flex-column align-center">
     <v-card-text class="text-h5"> Expenses Statistics </v-card-text>
-    <Bar :data="data" :options="options" ref="barChart" />
+    <Line :data="data" :options="options" ref="barChart" />
   </v-card>
   <v-divider class="ma-2" />
   <v-card
@@ -24,9 +24,10 @@ import {
   CategoryScale,
   LinearScale,
   ArcElement,
+  LineElement,
 } from "chart.js";
 import moment from "moment";
-import { Bar, Doughnut, Pie } from "vue-chartjs";
+import { Bar, Doughnut, Pie, Line } from "vue-chartjs";
 import { useAxios } from "~/composables/useAxios";
 import { FilterType } from "~/types/enums/FilterType";
 import { Transfer } from "~/types/Transfer";
@@ -155,7 +156,8 @@ const data = computed(() => {
       {
         data: transfersValues.value,
         label: "Spending Total",
-        backgroundColor: "surface-variant",
+        backgroundColor: "black",
+        borderColor: "black",
       },
     ],
   };

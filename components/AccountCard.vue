@@ -62,10 +62,12 @@ import { useAxios } from "~/composables/useAxios";
 import visaLogo from "~/assets/img/AccountFlagLogos/visaLogo.jpg";
 import masterCardLogo from "~/assets/img/AccountFlagLogos/masterCardLogo.png";
 import americanExpressLogo from "~/assets/img/AccountFlagLogos/americanExpressLogo.png";
+import { useDashBoardStore } from "~/store/DashBoardStore";
 //******IMPORTS*******"
 
 //******COMPOSABLES*******"
 const { $axios } = useAxios();
+const dashBoardStore = useDashBoardStore();
 //******COMPOSABLES*******"
 
 //******PROPS*******"
@@ -122,6 +124,12 @@ const formatCurrency = (value: Number | undefined) => {
 
 const onCarouselChange = (newIndex: any) => {
   const currentAccount = accountsReturn.value[newIndex];
+
+  if (!currentAccount) {
+    return;
+  }
+
+  dashBoardStore.SetCurrentAccountId(Number(currentAccount.accountId));
 };
 
 const SelectAccountFlagImg = (accountFlagId?: number) => {

@@ -25,10 +25,12 @@ import {
   LinearScale,
   ArcElement,
   LineElement,
+  PointElement,
 } from "chart.js";
 import moment from "moment";
 import { Bar, Doughnut, Pie, Line } from "vue-chartjs";
 import { useAxios } from "~/composables/useAxios";
+import { useDashBoardStore } from "~/store/DashBoardStore";
 import { FilterType } from "~/types/enums/FilterType";
 import { Transfer } from "~/types/Transfer";
 //******IMPORTS*******"
@@ -38,6 +40,8 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
+  LineElement,
+  PointElement,
   Title,
   Tooltip,
   Legend,
@@ -45,6 +49,7 @@ ChartJS.register(
 );
 
 const { $axios } = useAxios();
+const dashBoardStore = useDashBoardStore();
 //******COMPOSABLES*******"
 
 //******PROPS*******"
@@ -145,7 +150,12 @@ const doughnutOptions = {
 //******VARIAVEIS*******"
 
 //******WATCHS*******"
-
+watch(
+  () => dashBoardStore.$currentAccountId,
+  async () => {
+    await LoadComponentData();
+  }
+);
 //******WATCHS*******"
 
 //******COMPUTEDS*******"
@@ -194,32 +204,16 @@ const doughnutData = computed(() => {
     ],
   };
 });
-
-const financialPlanLogsData = computed(() => {
-  return {
-    labels: ["Segunda", "Terça", "Personal"],
-    datasets: [
-      {
-        backgroundColor: [
-          "#E46651",
-          "#41B883",
-          "#2196F3",
-          "#F4A261",
-          "#A3D5D3",
-          "#B2A4FF",
-          "#F7C5C5",
-          "#C1D9A7",
-          "#D3C4F3",
-        ],
-        data: categoriesAnalyticsReturn.value,
-      },
-    ],
-  };
-});
 //******COMPUTEDS*******"
 
 //******LIFECYCLE HOOKS*******"
 onMounted(async () => {
+  await LoadComponentData();
+});
+//******LIFECYCLE HOOKS*******"
+
+//******METHODS*******"
+const LoadComponentData = async () => {
   await getTransfersByPeriod();
   await GetCategoriesAnalytics();
   await nextTick();
@@ -234,13 +228,11 @@ onMounted(async () => {
       console.error("A instância do gráfico não está disponível");
     }
   }
-});
-//******LIFECYCLE HOOKS*******"
+};
 
-//******METHODS*******"
 const getTransfersByPeriod = async () => {
   const filter = {
-    accountId: 2,
+    accountId: dashBoardStore.$currentAccountId,
     FilterType: "Last12Months",
   };
 
@@ -265,7 +257,7 @@ const getTransfersByPeriod = async () => {
 
 const GetCategoriesAnalytics = async () => {
   const filter = {
-    AccountId: 2,
+    AccountId: dashBoardStore.$currentAccountId,
   };
 
   try {

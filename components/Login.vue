@@ -53,12 +53,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
 
 const loading = ref(false);
 const email = ref("");
 const password = ref("");
 const router = useRouter();
 const { $axios } = useAxios();
+const toast = useToast();
 const isClient = !import.meta.server;
 
 const login = async () => {
@@ -70,14 +72,14 @@ const login = async () => {
     });
 
     if (response.status == 200 && isClient) {
+      toast.success("Successfully logged in. Welcome aboard!");
       const token = response.data.token;
       localStorage.setItem("token", token);
 
       router.push("/DashBoard");
     }
   } catch (error) {
-    console.error("Erro no login:", error);
-    alert("Credenciais inválidas");
+    toast.error("Invalid username or password. Please try again.");
   } finally {
     loading.value = false;
   }

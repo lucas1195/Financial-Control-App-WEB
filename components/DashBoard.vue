@@ -11,7 +11,7 @@
           :key="index"
           :value="index"
         >
-          <template v-slot:prepend="{ isActive }">
+          <template v-slot:prepend>
             <v-list-item-action start>
               <v-btn
                 x-small
@@ -72,13 +72,6 @@ const data = ref<Transfer[]>([]);
 const page = ref(1);
 const perPage = ref(4);
 const pages = ref(data.value);
-
-const visiblePages = () => {
-  return pages.value.slice(
-    (page.value - 1) * perPage.value,
-    page.value * perPage.value
-  );
-};
 //******VARIAVEIS*******"
 
 //******WATCHS*******"

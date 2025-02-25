@@ -72,10 +72,9 @@ const login = async () => {
     });
 
     if (response.status == 200 && isClient) {
-      toast.success("Successfully logged in. Welcome aboard!");
       const token = response.data.token;
       localStorage.setItem("token", token);
-
+      toast.success("Successfully logged in. Welcome aboard!");
       router.push("/DashBoard");
     }
   } catch (error) {

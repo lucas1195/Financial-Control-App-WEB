@@ -38,6 +38,12 @@
     </v-navigation-drawer>
 
     <v-main class="d-flex align-center justify-center v-main-custom">
+      <v-row>
+        <spam>
+          <v-btn>Teste</v-btn>
+        </spam>
+      </v-row>
+
       <v-container>
         <h1 class="mb-2 title-custom">Hello, Lucas!</h1>
 
@@ -79,11 +85,14 @@
 
 <script setup lang="ts">
 //******IMPORTS*******"
+import { useToast } from "vue-toastification";
+import { useRouter } from "vue-router";
 import moment from "moment";
 //******IMPORTS*******"
 
 //******COMPOSABLES*******"
-
+const toast = useToast();
+const router = useRouter();
 //******COMPOSABLES*******"
 
 //******PROPS*******"
@@ -109,6 +118,12 @@ const menuItems = computed(() => {
   ];
 });
 const currentDate = ref(moment().format("DD/MM/YYYY HH:mm"));
+
+const logout = () => {
+  localStorage.removeItem("token");
+  toast.success("Logged out successfully. See you soon!");
+  router.push("/Login");
+};
 //******VARIAVEIS*******"
 
 //******WATCHS*******"

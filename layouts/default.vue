@@ -38,12 +38,6 @@
     </v-navigation-drawer>
 
     <v-main class="d-flex align-center justify-center v-main-custom">
-      <v-row>
-        <spam>
-          <v-btn>Teste</v-btn>
-        </spam>
-      </v-row>
-
       <v-container>
         <h1 class="mb-2 title-custom">Hello, Lucas!</h1>
 

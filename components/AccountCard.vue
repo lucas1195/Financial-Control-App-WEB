@@ -104,6 +104,14 @@ const GetAllAccountsByUser = async () => {
     loading.value = true;
     let result = await $axios.get("Account/GetAccountsByUser");
     accountsReturn.value = result.data;
+
+    const firstAccount = accountsReturn?.value[0];
+
+    if (firstAccount == null) {
+      return;
+    }
+
+    dashBoardStore.SetCurrentAccountId(Number(firstAccount.accountId));
   } catch (error) {
     console.error(error);
   } finally {

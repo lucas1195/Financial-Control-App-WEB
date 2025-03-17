@@ -107,7 +107,10 @@ const GetAllAccountsByUser = async () => {
 
     const firstAccount = accountsReturn?.value[0];
 
-    if (firstAccount == null) {
+    if (
+      firstAccount === undefined ||
+      dashBoardStore.$currentAccountId !== undefined
+    ) {
       return;
     }
 

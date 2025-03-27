@@ -1,11 +1,16 @@
 <template>
   <NuxtLayout>
     <template v-slot:left-sheet>
-      <Transactions />
+      <Transfers />
     </template>
 
     <template v-slot:right-sheet>
-      <Analytics />
+      <TransferForm />
     </template>
   </NuxtLayout>
 </template>
+
+<script setup lang="ts">
+import TransferForm from "~/components/TransferForm.vue";
+import Transfers from "~/components/Transfers.vue";
+</script>

@@ -77,16 +77,27 @@
                     variant="outlined"
                   />
                 </template>
+
+                <template v-slot:item.actions="{ item }">
+                  <v-btn icon color="red" @click="deleteItem(item)">
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </template>
               </v-data-table>
             </v-container>
           </v-card>
         </template>
         <v-card-actions>
           <v-spacer></v-spacer>
-
+          <v-btn
+            color="primary"
+            text="Process"
+            variant="elevated"
+            @click="emit('close')"
+          ></v-btn>
           <v-btn
             color="red-darken-2"
-            text="Fechar"
+            text="Close"
             variant="elevated"
             @click="emit('close')"
           ></v-btn>
@@ -97,11 +108,9 @@
 </template>
 
 <script setup lang="ts">
+//******IMPORTS*******"
 import type { Category } from "~/types/Category";
 import { Transfer } from "~/types/Transfer";
-
-//******IMPORTS*******"
-
 //******IMPORTS*******"
 
 //******COMPOSABLES*******"
@@ -130,6 +139,7 @@ const headers = [
   { title: "Date", key: "transferDate", width: "150px" },
   { title: "Category ID", key: "categoryId", width: "150px" },
   { title: "Account ID", key: "accountId", width: "100px", align: "center" },
+  { title: "Actions", key: "actions", width: "100px", align: "center" },
 ];
 //******VARIAVEIS*******"
 
@@ -177,6 +187,20 @@ const GetCategories = async () => {
     }
   } catch (error) {
     console.error(error);
+  }
+};
+
+const deleteItem = (item: Transfer) => {
+  if (!item) {
+    return;
+  }
+
+  const index = processingResults.value.findIndex(
+    (t: Transfer) => t.transferId === item.transferId
+  );
+
+  if (index !== -1) {
+    processingResults.value.splice(index, 1);
   }
 };
 //******METHODS*******"

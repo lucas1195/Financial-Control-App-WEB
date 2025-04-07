@@ -93,7 +93,7 @@
             color="primary"
             text="Process"
             variant="elevated"
-            @click="emit('close')"
+            @click="InsertProcessedTransfers()"
           ></v-btn>
           <v-btn
             color="red-darken-2"
@@ -111,10 +111,12 @@
 //******IMPORTS*******"
 import type { Category } from "~/types/Category";
 import { Transfer } from "~/types/Transfer";
+import { useToast } from "vue-toastification";
 //******IMPORTS*******"
 
 //******COMPOSABLES*******"
 const { $axios } = useAxios();
+const toast = useToast();
 //******COMPOSABLES*******"
 
 //******PROPS*******"
@@ -170,10 +172,15 @@ const GetPdfReadingResults = async () => {
     const result = await $axios.get<Transfer[]>("/PdfReader/PdfReaderItauBank");
 
     if (result.data !== undefined && result.data.length > 0) {
+      toast.success("Success! Transactions have been extracted from the PDF.");
       processingResults.value = result.data;
     }
   } catch (error) {
-    console.error(error);
+    toast.error(
+      //@ts-ignore
+      error?.response?.data?.message ||
+        "An error occurred while processing the PDF file."
+    );
   } finally {
     loading.value = false;
   }
@@ -187,6 +194,24 @@ const GetCategories = async () => {
     }
   } catch (error) {
     console.error(error);
+  }
+};
+
+const InsertProcessedTransfers = async () => {
+  try {
+    loading.value = true;
+    if (processingResults.value.length == 0 || !processingResults.value) {
+      toast.error("Transfers list is empty!");
+      return;
+    }
+    await $axios.post(
+      "/PdfReader/InsertProcessedTransfers",
+      processingResults.value
+    );
+  } catch (error) {
+    console.error(error);
+  } finally {
+    loading.value = false;
   }
 };
 

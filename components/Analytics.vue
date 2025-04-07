@@ -233,7 +233,7 @@ const LoadComponentData = async () => {
 const getTransfersByPeriod = async () => {
   const filter = {
     accountId: dashBoardStore.$currentAccountId,
-    FilterType: "Last12Months",
+    FilterType: "Last30Days",
   };
 
   try {

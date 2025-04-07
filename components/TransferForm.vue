@@ -1,6 +1,6 @@
 <template>
   <v-card class="rounded-lg pa-5" elevation="8">
-    <v-card-title class="mb-4"> Register new Tranfers </v-card-title>
+    <v-card-title class="mb-4"> Register new Transfers </v-card-title>
     <v-btn @click="showProcessingResultsDialog = true">Import PDF</v-btn>
   </v-card>
   <TransfersProcessingDialog

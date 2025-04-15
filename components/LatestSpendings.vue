@@ -76,9 +76,6 @@ const dashBoardStore = useDashBoardStore();
 //******VARIAVEIS*******"
 const data = ref<Transfer[]>([]);
 const loading = ref(false);
-const page = ref(1);
-const perPage = ref(4);
-const pages = ref(data.value);
 //******VARIAVEIS*******"
 
 //******WATCHS*******"

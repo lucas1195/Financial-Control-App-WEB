@@ -9,8 +9,3 @@
     </template>
   </NuxtLayout>
 </template>
-
-<script setup lang="ts">
-import TransferForm from "~/components/TransferForm.vue";
-import Transfers from "~/components/Transfers.vue";
-</script>
